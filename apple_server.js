@@ -159,7 +159,7 @@ const generateToken = function(teamId, clientId, privateKey, keyId) {
 
 function getAbsoluteUrlOptions(query) {
   const overrideRootUrlFromStateRedirectUrl =
-    Meteor.settings?.packages?.['quave:apple-oauth']
+    Meteor.settings?.packages?.['carlosalvidrez:apple-oauth']
       ?.overrideRootUrlFromStateRedirectUrl;
   if (!overrideRootUrlFromStateRedirectUrl) {
     return undefined;
