@@ -16,7 +16,7 @@ import {
  * @param {Object}    options                             Optional
  * @param {Function}  credentialRequestCompleteCallback   Callback function to call on completion. Takes one argument, credentialToken on success, or Error on error.
  */
-Apple.requestCredential = function(options, oauthCallback, nativeCallback) {
+Apple.requestCredential = async function(options, oauthCallback, nativeCallback) {
   const nativeFlow = hasSupportForNativeLogin();
 
   let credentialRequestCompleteCallback = nativeFlow
@@ -30,7 +30,7 @@ Apple.requestCredential = function(options, oauthCallback, nativeCallback) {
     options = {};
   }
   const appId = getAppIdFromOptions(options);
-  const config = getServiceConfiguration({ appId });
+  const config = await getServiceConfiguration({ appId });
 
   if (!config) {
     credentialRequestCompleteCallback &&
@@ -48,10 +48,7 @@ Apple.requestCredential = function(options, oauthCallback, nativeCallback) {
         : 'name%20email';
 
     const redirectUri =
-      (options &&
-        options.absoluteUrlOptions &&
-        options.absoluteUrlOptions.rootUrl) ||
-      config.redirectUri;
+      (options && options.absoluteUrlOptions && options.absoluteUrlOptions.rootUrl) || config.redirectUri;
     const redirectUriWithOauth = redirectUri.includes('/_oauth/apple')
       ? redirectUri
       : `${redirectUri}${redirectUri.endsWith('/') ? '' : '/'}_oauth/apple`;

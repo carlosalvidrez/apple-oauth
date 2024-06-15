@@ -159,7 +159,7 @@ const generateToken = function(teamId, clientId, privateKey, keyId) {
 
 function getAbsoluteUrlOptions(query) {
   const overrideRootUrlFromStateRedirectUrl =
-    Meteor.settings?.packages?.['quave:apple-oauth']
+    Meteor.settings?.packages?.['carlosalvidrez:apple-oauth']
       ?.overrideRootUrlFromStateRedirectUrl;
   if (!overrideRootUrlFromStateRedirectUrl) {
     return undefined;
@@ -186,7 +186,7 @@ function getAbsoluteUrlOptions(query) {
  *
  * @param {*} query auth/authorize redirect response from apple
  */
-const getTokens = ({query, isNative = false}) => {
+const getTokens = async ({query, isNative = false}) => {
   const endpoint = 'https://appleid.apple.com/auth/token';
   let state = {};
   try {
@@ -194,7 +194,7 @@ const getTokens = ({query, isNative = false}) => {
   } catch (e) {}
 
   const appId = getAppIdFromOptions(state)
-  Apple.config = getServiceConfiguration({ appId });
+  Apple.config = await getServiceConfiguration({ appId });
   if (!Apple.config) {
     throw new ServiceConfiguration.ConfigError('Apple');
   }
@@ -271,9 +271,9 @@ const getTokens = ({query, isNative = false}) => {
   }
 };
 
-const getServiceData = query =>
+const getServiceData = async query =>
   getServiceDataFromTokens({
-    query, tokens: getTokens({query})
+    query, tokens: await getTokens({query})
 });
 OAuth.registerService('apple', 2, null, getServiceData);
 Accounts.registerLoginHandler(query => {

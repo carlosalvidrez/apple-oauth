@@ -1,6 +1,7 @@
-# quavedev:apple-oauth
+# carlosalvidrez:apple-oauth
 
 Sign in with Apple handler with native cordova plugin handler. forked from jramer/apple-oauth
+Forked from quave:apple-oauth
 
 ## Config
 
